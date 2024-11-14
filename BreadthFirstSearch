@@ -1,0 +1,54 @@
+import time
+from collections import deque
+import heapq
+
+class BreadthFirstSearch:
+    def __init__(self, start_state, goal_state, grid):
+
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.visited = set()  # To track visited states
+        self.queue = deque([(start_state, [start_state])])  # Queue stores (state, path_to_state)
+
+    def search(self):
+
+        while self.queue:
+            current_state, path = self.queue.popleft()
+
+            if current_state.is_goal(self.goal_state):
+                return path
+
+            self.visited.add((current_state.x, current_state.y, frozenset(current_state.collected_items)))
+
+            for neighbor in current_state.get_neighbors(self.grid):
+
+                neighbor_signature = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+                if neighbor_signature not in self.visited:
+                    self.queue.append((neighbor, path + [neighbor]))
+
+
+        return None
+
+
+grid_size = 5
+obstacle_positions = {(1, 1), (2, 2), (3, 3)}
+collectible_positions = {(1, 2), (2, 3), (3, 1)}
+grid = Grid(grid_size, obstacle_positions, collectible_positions)
+
+start_state = State(0, 0)
+goal_state = State(4, 4)
+
+start_time = time.time()
+bfs = BreadthFirstSearch(start_state, goal_state, grid)
+path = bfs.search()
+elapsed_time = time.time() - start_time
+print("elapsed time: " , elapsed_time)  
+
+if path:
+            print("Path found:")
+            for state in path:
+                print(state)
+            print(f"Path length: {len(path) - 1} steps")
+else:
+            print("No path found.")
