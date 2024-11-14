@@ -1,0 +1,59 @@
+import time
+from collections import deque
+import heapq
+
+class DepthFirstSearch:
+    def __init__(self, start_state, goal_state, grid):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.visited = set()
+     
+        self.stack = [(start_state, [start_state])] 
+
+    def search(self):
+        while self.stack:
+            current_state, path = self.stack.pop()
+
+            if current_state.is_goal(self.goal_state):
+                return path  
+
+            
+            state_key = (current_state.x, current_state.y, frozenset(current_state.collected_items))
+            self.visited.add(state_key)
+
+       
+            for neighbor in current_state.get_neighbors(self.grid):
+                neighbor_key = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+                if neighbor_key not in self.visited:
+                   
+                    self.stack.append((neighbor, path + [neighbor]))
+
+        return None  
+
+
+grid_size = 5
+obstacle_positions = {(1, 1), (2, 2)}
+collectible_positions = {(0, 1), (1, 2)}
+grid = Grid(grid_size, obstacle_positions, collectible_positions)
+
+    
+start_state = State(0, 0)
+goal_state = State(4, 4)
+
+  
+dfs = DepthFirstSearch(start_state, goal_state, grid)
+
+
+start_time = time.time()
+path = dfs.search()
+elapsed_time = time.time() - start_time
+
+   
+print("elapsed time: ", elapsed_time)
+if path:
+        print("Goal reached! Path:")
+        for state in path:
+            print(state)
+else:
+        print("No path to goal found.")
