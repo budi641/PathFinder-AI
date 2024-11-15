@@ -141,16 +141,22 @@ class State:
 - **get_neighbors(grid)**: Generates potential moves, checking boundaries, obstacles, and collectibles.
 - **is_goal(goal_state)**: Checks if the AI has reached the goal.
 - **collected_items**: Tracks items collected by the AI in the current state.
-
 ---
 
 ## **3. Problem Size Estimation**
 
 - **Method**: The size of the state space is estimated by considering the number of valid cells and collectible configurations.
-  - **Valid Positions**: The total cells in the grid minus obstacle cells.
-  - **Collectible Combinations**: For each collectible, there are two possible states (collected or not), giving \( 2^{\text{number of collectibles}} \) combinations.
+  - **Valid Positions**: The total number of cells in the grid minus the number of obstacle cells.
+  - **Collectible Combinations**: For each collectible, there are two possible states: collected or not collected. This results in `2^(number of collectibles)` combinations.
   - **Total State Space**: The product of valid cells and collectible combinations.
 
-Example:
-For a 5x5 grid with 3 obstacles and 2 collectibles, the state space would be calculated as:
-\[ \text{state\_space\_size} = (25 - 3) \times 2^2 = 22 \times 4 = 88 \]
+**Example:**
+
+For a 5x5 grid with 3 obstacles and 2 collectibles:
+- Total cells = 25  
+- Obstacles = 3  
+- Valid cells = 25 - 3 = 22  
+- Collectible combinations = 2^2 = 4  
+- State space size = 22 * 4 = 88  
+
+--- 
