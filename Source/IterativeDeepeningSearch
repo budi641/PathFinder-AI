@@ -23,7 +23,7 @@ class IterativeDeepeningSearch:
     def depth_limited_search(self, state, limit):
         return self.recursive_dls(state, limit, set(), [state])
 
-    def recursive_dls(self, state, limit, visited, path):
+    def  recursive_dls(self, state, limit, visited, path):
         if state.is_goal(self.goal_state):
             return path 
 
