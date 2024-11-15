@@ -69,32 +69,30 @@ class IterativeDeepeningSearch:
     def search(self):
         depth = 0
         while True:
-            
             result = self.depth_limited_search(self.start_state, depth)
             if result is not None:
-                return result, depth 
+                return result
             depth += 1
 
     def depth_limited_search(self, state, limit):
         return self.recursive_dls(state, limit, set(), [state])
 
-    def  recursive_dls(self, state, limit, visited, path):
+    def recursive_dls(self, state, limit, visited, path):
         if state.is_goal(self.goal_state):
-            return path 
+            return path
 
         if limit == 0:
             return None
 
-       
         visited.add((state.x, state.y, frozenset(state.collected_items)))
 
         for neighbor in state.get_neighbors(self.grid):
             key = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
             if key not in visited:
-              
                 result = self.recursive_dls(neighbor, limit - 1, visited, path + [neighbor])
                 if result is not None:
                     return result
 
         visited.remove((state.x, state.y, frozenset(state.collected_items)))
         return None
+

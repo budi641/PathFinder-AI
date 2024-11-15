@@ -5,7 +5,7 @@ COLLECTIBLE_POSITIONS = {(1, 2), (3, 4), (6, 7)}
 
 # Start and Goal positions
 START_POSITION = (0, 0)
-GOAL_POSITION = (9, 9)
+GOAL_POSITION = (8, 9)
 
 # Algorithm(choose one from: 'DFS', 'BFS', 'IDS')
-SEARCH_ALGORITHM = 'BFS'
+SEARCH_ALGORITHM = 'IDS'
