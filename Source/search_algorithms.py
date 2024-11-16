@@ -105,7 +105,7 @@ class GreedySearch:
         self.goal_state = goal_state
         self.grid = grid
         self.visited = set()
-        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid)))])  # Queue stores (state, path_to_state, heuristic_cost)
+        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid),goal_state))])  
 
     def search(self):
         while self.queue:
@@ -114,12 +114,7 @@ class GreedySearch:
             current_state, path, neighbors_heuristic = self.queue.pop()
 
             neighbors= current_state.get_neighbors(self.grid)
-            #print(current_state.get_neighbors(self.grid))
-            #print(grid.heuristic(start_state.get_neighbors(self.grid)))
-
-            #print(current_state.get_neighbors(self.grid))
-            #print(grid.heuristic(start_state.get_neighbors(self.grid)))
-           # print(neighbors_heuristic)
+            
             if current_state.is_goal(self.goal_state):
                 return path
 
@@ -128,25 +123,25 @@ class GreedySearch:
 
             neighbors_heuristic = sorted(neighbors_heuristic, key=lambda item: item[1])
 
-            #print(neighbors_heuristic)
+            
             for neighbor in neighbors_heuristic:
 
                 neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
                 if neighbor_signature not in self.visited:
-
-                    self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid))))
+                   
+                    self.queue.append((neighbor[0], path + [neighbor[0]], grid.heuristic(neighbor[0].get_neighbors(self.grid),goal_state)))
                     break
 
 
         return None
-
+        
 class Astar:
     def __init__(self, start_state, goal_state, grid):
         self.start_state = start_state
         self.goal_state = goal_state
         self.grid = grid
         self.visited = set()
-        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid)))])  # Queue stores (state, path_to_state, heuristic_cost)
+        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid),goal_state))])  
 
     def search(self):
         while self.queue:
@@ -162,24 +157,27 @@ class Astar:
 
             astar_heuristic = []
 
-
+            
 
             for neighbor in neighbors_heuristic:
-
-               astar_heuristic.append([neighbor[0] , neighbor[1] + self.grid.get_distance(neighbor[0], self.goal_state)])
+               
+               astar_heuristic.append([neighbor[0] , neighbor[1] + grid.get_distance(neighbor[0], self.goal_state)])
 
             astar_heuristic = sorted(astar_heuristic, key=lambda item: item[1])
-
+            #print( astar_heuristic)
             for neighbor in astar_heuristic:
 
                 neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
                 if neighbor_signature not in self.visited:
-
-                    self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid))))
+                    
+                    self.queue.append((neighbor[0], path + [neighbor[0]], grid.heuristic(neighbor[0].get_neighbors(self.grid),goal_state)))
                     break
 
 
         return None
+
+
+
 
 class UniformCostSearch:
     def __init__(self, start_state, goal_state, grid):
