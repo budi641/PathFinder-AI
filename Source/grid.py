@@ -1,4 +1,5 @@
 import math
+import sys
 class Grid:
     def __init__(self, size, obstacles=None, collectibles=None):
         self.size = size

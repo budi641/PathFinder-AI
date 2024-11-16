@@ -129,7 +129,7 @@ class GreedySearch:
                 neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
                 if neighbor_signature not in self.visited:
                    
-                    self.queue.append((neighbor[0], path + [neighbor[0]], grid.heuristic(neighbor[0].get_neighbors(self.grid),goal_state)))
+                    self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid),self.goal_state)))
                     break
 
 
@@ -186,7 +186,6 @@ class UniformCostSearch:
         self.grid = grid
         self.visited = set()
         self.queue = PriorityQueue()
-
         self.queue.put((0, start_state, [start_state]))
 
     def search(self):
