@@ -4,7 +4,7 @@ from state import State
 from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch,UniformCostSearch
 from game import Game
 import timeit
-
+########
 def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
     match algorithm_name:
         case 'DFS':
