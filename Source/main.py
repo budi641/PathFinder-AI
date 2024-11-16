@@ -1,10 +1,11 @@
 from config import GRID_SIZE, OBSTACLE_POSITIONS, COLLECTIBLE_POSITIONS, START_POSITION, GOAL_POSITION, SEARCH_ALGORITHM
 from grid import Grid
 from state import State
-from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch,UniformCostSearch
+from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch,UniformCostSearch,HillClimbing,SimulatedAnnealing
 from game import Game
 import timeit
-########
+
+
 def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
     match algorithm_name:
         case 'DFS':
@@ -19,8 +20,13 @@ def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
             return GreedySearch(start_state, goal_state, grid)
         case 'UCS':
             return UniformCostSearch(start_state, goal_state, grid)
+        case 'HC':
+            return HillClimbing(start_state, goal_state, grid)
+        case 'SA':
+            return SimulatedAnnealing(start_state, goal_state, grid,)
         case _:
             raise ValueError(f"Unknown search algorithm: {algorithm_name}")
+
 
 def main():
     # Initialize the grid
@@ -51,6 +57,7 @@ def main():
         print(f"Runtime: {runtime:.6f} seconds")
     else:
         print("No path found.")
+        #return
 
     # Visualize the path using the Game class
     game = Game(grid, start_state, goal_state, path)

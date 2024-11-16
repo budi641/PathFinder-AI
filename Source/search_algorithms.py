@@ -3,6 +3,7 @@ from queue import PriorityQueue
 import heapq
 import sys
 import math
+import random
 from grid import *
 from state import *
 
@@ -205,3 +206,74 @@ class UniformCostSearch:
                     self.queue.put((new_cost, neighbor_key, path + [neighbor]))
 
         return None
+
+
+class HillClimbing:
+    def __init__(self, start_state, goal_state, grid):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+
+    def search(self):
+        current_state = self.start_state
+        path = [current_state]
+
+        while not current_state.is_goal(self.goal_state):
+
+            neighbors = current_state.get_neighbors_uninformed(self.grid)
+
+
+            best_neighbor = min(neighbors, key=lambda neighbor: self.grid.get_distance(neighbor, self.goal_state))
+
+            if self.grid.get_distance(best_neighbor, self.goal_state) >= self.grid.get_distance(current_state, self.goal_state):
+                break
+
+            current_state = best_neighbor
+            path.append(current_state)
+
+        return path if current_state.is_goal(self.goal_state) else None
+
+
+class SimulatedAnnealing:
+    def __init__(self, start_state, goal_state, grid, initial_temperature=1000, cooling_rate=0.99):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.temperature = initial_temperature
+        self.cooling_rate = cooling_rate
+
+    def search(self):
+        current_state = self.start_state
+        path = [current_state]
+
+        while self.temperature > 1:
+
+            neighbors = current_state.get_neighbors_uninformed(self.grid)
+            if not neighbors:
+                break
+
+            if(current_state == self.goal_state):
+                break
+
+            next_state = random.choice(neighbors)
+
+            # Calculate energy 
+            current_cost = self.grid.get_distance(current_state, self.goal_state)
+            next_cost = self.grid.get_distance(next_state, self.goal_state)
+            delta_cost = next_cost - current_cost
+
+            # next state 
+            if delta_cost < 0 or math.exp(-delta_cost / self.temperature) > random.random():
+                current_state = next_state
+                path.append(current_state)
+
+            # Cool down 
+            self.temperature *= self.cooling_rate
+        
+        
+        return path
+            
+
+
+
+

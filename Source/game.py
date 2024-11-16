@@ -117,7 +117,7 @@ class Game:
                     x, y = self.path[current_index].x, self.path[current_index].y
                     if (x, y) in self.grid.collectibles:
                         collected_items.add((x, y))
-                    pygame.time.delay(5)  # Delay for smooth animation
+                    pygame.time.delay(50)  # Delay for smooth animation
                 else:
                     play_full_path = False  # Stop when the end of the path is reached
 
