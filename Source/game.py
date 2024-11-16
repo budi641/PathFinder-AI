@@ -34,7 +34,7 @@ class Game:
                 if (x, y) == (self.path[current_index].x, self.path[current_index].y):
                     color = (0, 255, 0)  # Green for the current position
                 elif any((step.x, step.y) == (x, y) for step in self.path[:current_index]):
-                    color = (200, 200, 200)  # Grey for visited cells
+                    color = (50, 50, 50)  # Grey for visited cells
                 else:
                     color = (255, 255, 255)  # White for unvisited cells
 
@@ -80,6 +80,7 @@ class Game:
     def run(self):
         current_index = 0  # Start at the first step in the path
         collected_items = set()  # Track collected items
+        play_full_path = False  # Flag to determine if the path should play automatically
 
         running = True
         while running:
@@ -104,6 +105,26 @@ class Game:
                         if (x, y) in collected_items:
                             collected_items.remove((x, y))
                         current_index -= 1
+                    elif event.key == pygame.K_RETURN:
+                        # Start playing the full path
+                        play_full_path = True
+
+            # If playing the full path automatically
+            if play_full_path:
+                if current_index < len(self.path) - 1:
+                    current_index += 1
+                    # Collect items at the new position
+                    x, y = self.path[current_index].x, self.path[current_index].y
+                    if (x, y) in self.grid.collectibles:
+                        collected_items.add((x, y))
+                    pygame.time.delay(5)  # Delay for smooth animation
+                else:
+                    play_full_path = False  # Stop when the end of the path is reached
+
+
+
+                        
+
 
         pygame.quit()
 
