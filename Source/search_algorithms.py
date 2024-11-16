@@ -117,7 +117,7 @@ class GreedySearch:
             neighbors= current_state.get_neighbors(self.grid)
             
             if current_state.is_goal(self.goal_state):
-                return path
+                break
 
             self.visited.add((current_state.x, current_state.y))
 
@@ -134,7 +134,7 @@ class GreedySearch:
                     break
 
 
-        return None
+        return path
         
 class Astar:
     def __init__(self, start_state, goal_state, grid):
