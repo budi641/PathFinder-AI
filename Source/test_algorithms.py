@@ -1,6 +1,6 @@
 from grid import Grid
 from state import State
-from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch
+from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch,UniformCostSearch
 
 def test_algorithm(algorithm_class, grid_size, start_pos, goal_pos, obstacles, collectibles, expected_path=None):
     grid = Grid(grid_size)

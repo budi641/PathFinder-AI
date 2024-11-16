@@ -1,7 +1,7 @@
 from config import GRID_SIZE, OBSTACLE_POSITIONS, COLLECTIBLE_POSITIONS, START_POSITION, GOAL_POSITION, SEARCH_ALGORITHM
 from grid import Grid
 from state import State
-from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch
+from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch,UniformCostSearch
 from game import Game
 import timeit
 
@@ -17,6 +17,8 @@ def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
             return Astar(start_state, goal_state, grid)
         case 'GS':
             return GreedySearch(start_state, goal_state, grid)
+        case 'UCS':
+            return UniformCostSearch(start_state, goal_state, grid)
         case _:
             raise ValueError(f"Unknown search algorithm: {algorithm_name}")
 
