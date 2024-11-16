@@ -161,7 +161,7 @@ class Astar:
 
             for neighbor in neighbors_heuristic:
                
-               astar_heuristic.append([neighbor[0] , neighbor[1] + grid.get_distance(neighbor[0], self.goal_state)])
+               astar_heuristic.append([neighbor[0] , neighbor[1] + self.grid.get_distance(neighbor[0], self.goal_state)])
 
             astar_heuristic = sorted(astar_heuristic, key=lambda item: item[1])
             #print( astar_heuristic)
@@ -170,7 +170,7 @@ class Astar:
                 neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
                 if neighbor_signature not in self.visited:
                     
-                    self.queue.append((neighbor[0], path + [neighbor[0]], grid.heuristic(neighbor[0].get_neighbors(self.grid),goal_state)))
+                    self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid),self.goal_state)))
                     break
 
 

@@ -8,4 +8,4 @@ START_POSITION = (0, 0)
 GOAL_POSITION = (8, 9)
 
 # Algorithm(choose one from: 'DFS', 'BFS', 'IDS','A*','GS','UCS')
-SEARCH_ALGORITHM = 'GS'
+SEARCH_ALGORITHM = 'A*'
