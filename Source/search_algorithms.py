@@ -23,12 +23,12 @@ class DepthFirstSearch:
                 return path  
 
             
-            state_key = (current_state.x, current_state.y, frozenset(current_state.collected_items))
-            self.visited.add(state_key)
-
        
-            for neighbor in current_state.get_neighbors(self.grid):
-                neighbor_key = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+            self.visited.add((current_state.x, current_state.y))
+
+        
+            for neighbor in current_state.get_neighbors_uninformed(self.grid):
+                neighbor_key = (neighbor.x, neighbor.y)
                 if neighbor_key not in self.visited:
                    
                     self.stack.append((neighbor, path + [neighbor]))
@@ -52,11 +52,11 @@ class BreadthFirstSearch:
             if current_state.is_goal(self.goal_state):
                 return path
 
-            self.visited.add((current_state.x, current_state.y, frozenset(current_state.collected_items)))
+            self.visited.add((current_state.x, current_state.y))
 
-            for neighbor in current_state.get_neighbors(self.grid):
+            for neighbor in current_state.get_neighbors_uninformed(self.grid):
 
-                neighbor_signature = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+                neighbor_signature = (neighbor.x, neighbor.y)
                 if neighbor_signature not in self.visited:
                     self.queue.append((neighbor, path + [neighbor]))
 
@@ -87,16 +87,16 @@ class IterativeDeepeningSearch:
         if limit == 0:
             return None
 
-        visited.add((state.x, state.y, frozenset(state.collected_items)))
+        visited.add((state.x, state.y))
 
-        for neighbor in state.get_neighbors(self.grid):
-            key = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+        for neighbor in state.get_neighbors_uninformed(self.grid):
+            key = (neighbor.x, neighbor.y)
             if key not in visited:
                 result = self.recursive_dls(neighbor, limit - 1, visited, path + [neighbor])
                 if result is not None:
                     return result
 
-        visited.remove((state.x, state.y, frozenset(state.collected_items)))
+        visited.remove((state.x, state.y))
         return None
 
 class GreedySearch:
@@ -111,14 +111,14 @@ class GreedySearch:
         while self.queue:
 
 
-            current_state, path, neighbors_heuristic = self.queue.pop()
+            current_state, path, neighbors_heuristic = self.queue.popleft()
 
             neighbors= current_state.get_neighbors(self.grid)
             
             if current_state.is_goal(self.goal_state):
                 return path
 
-            self.visited.add((current_state.x, current_state.y, 0))
+            self.visited.add((current_state.x, current_state.y))
 
 
             neighbors_heuristic = sorted(neighbors_heuristic, key=lambda item: item[1])
@@ -126,7 +126,7 @@ class GreedySearch:
             
             for neighbor in neighbors_heuristic:
 
-                neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
+                neighbor_signature = (neighbor[0].x, neighbor[0].y)
                 if neighbor_signature not in self.visited:
                    
                     self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid),self.goal_state)))
@@ -146,14 +146,14 @@ class Astar:
     def search(self):
         while self.queue:
 
-            current_state, path, neighbors_heuristic = self.queue.pop()
+            current_state, path, neighbors_heuristic = self.queue.popleft()
 
             neighbors= current_state.get_neighbors(self.grid)
 
             if current_state.is_goal(self.goal_state):
                 return path
 
-            self.visited.add((current_state.x, current_state.y, 0))
+            self.visited.add((current_state.x, current_state.y))
 
             astar_heuristic = []
 
@@ -167,7 +167,7 @@ class Astar:
             #print( astar_heuristic)
             for neighbor in astar_heuristic:
 
-                neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
+                neighbor_signature = (neighbor[0].x, neighbor[0].y)
                 if neighbor_signature not in self.visited:
                     
                     self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid),self.goal_state)))
@@ -195,13 +195,13 @@ class UniformCostSearch:
             if current_state.is_goal(self.goal_state):
                 return path, current_cost
 
-            state_key = (current_state.x, current_state.y, frozenset(current_state.collected_items))
-            self.visited.add(state_key)
+            
+            self.visited.add(current_state.x, current_state.y)
 
-            for neighbor in current_state.get_neighbors(self.grid):
-                neighbor_key = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+            for neighbor in current_state.get_neighbors_uninformed(self.grid):
+                neighbor_key = (neighbor.x, neighbor.y)
                 if neighbor_key not in self.visited:
                     new_cost = current_cost + 1
                     self.queue.put((new_cost, neighbor_key, path + [neighbor]))
 
-        return None, float('inf')
+        return None
