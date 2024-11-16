@@ -1,3 +1,4 @@
+import math
 class Grid:
     def __init__(self, size, obstacles=None, collectibles=None):
         self.size = size
@@ -8,11 +9,11 @@ class Grid:
         return 0 <= x < self.size and 0 <= y < self.size
 
     def is_valid_grid_size(size, max_size=100):
-    
+
         return 1 <= size <= max_size
 
     def validate_action(x, y, grid_size):
-    
+
         return 0 <= x < grid_size and 0 <= y < grid_size
 
 
@@ -21,6 +22,7 @@ class Grid:
 
     def is_collectible(self, x, y):
         return (x, y) in self.collectibles
+
 
     def initialize_grid(self, obstacle_positions, collectible_positions):
         self.obstacles.update(obstacle_positions)
@@ -38,7 +40,27 @@ class Grid:
 
         # The total state space size is the product of valid positions and collectible combinations
         state_space_size = valid_states * collectible_combinations
-
         return state_space_size
+    def heuristic (self, neighbors):
+
+      neighbors_heuristic=[]
+      for neighbor in (neighbors):
+        h=5
+        if neighbor.is_goal(neighbor):
+             h=0
+        elif self.is_obstacle(neighbor.x, neighbor.y):
+            h=sys.maxsize
+
+        elif self.is_collectible(neighbor.x, neighbor.y):
+              h=1
 
 
+        neighbors_heuristic.append([neighbor,h])
+
+      return neighbors_heuristic
+
+    def get_distance(self, neighbor, goal_state):
+
+          distance = math.sqrt((neighbor.x - goal_state.x)**2 + (neighbor.y - goal_state.y)**2)
+
+          return distance

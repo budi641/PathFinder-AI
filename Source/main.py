@@ -1,7 +1,7 @@
 from config import GRID_SIZE, OBSTACLE_POSITIONS, COLLECTIBLE_POSITIONS, START_POSITION, GOAL_POSITION, SEARCH_ALGORITHM
 from grid import Grid
 from state import State
-from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch
+from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch
 from game import Game
 import timeit
 
@@ -13,6 +13,10 @@ def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
             return BreadthFirstSearch(start_state, goal_state, grid)
         case 'IDS':
             return IterativeDeepeningSearch(start_state, goal_state, grid)
+        case 'A*':
+            return Astar(start_state, goal_state, grid)
+        case 'GS':
+            return GreedySearch(start_state, goal_state, grid)
         case _:
             raise ValueError(f"Unknown search algorithm: {algorithm_name}")
 
@@ -36,7 +40,12 @@ def main():
 
     # Display the results
     if path:
-        print(f"Path found: {path}")
+        print("Path found")
+
+        for state in path:
+            print(state)
+
+
         print(f"Runtime: {runtime:.6f} seconds")
     else:
         print("No path found.")

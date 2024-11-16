@@ -1,5 +1,8 @@
 from collections import deque
+from queue import PriorityQueue
 import heapq
+import sys
+import math
 from grid import *
 from state import *
 
@@ -96,3 +99,112 @@ class IterativeDeepeningSearch:
         visited.remove((state.x, state.y, frozenset(state.collected_items)))
         return None
 
+class GreedySearch:
+    def __init__(self, start_state, goal_state, grid):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.visited = set()
+        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid)))])  # Queue stores (state, path_to_state, heuristic_cost)
+
+    def search(self):
+        while self.queue:
+
+
+            current_state, path, neighbors_heuristic = self.queue.pop()
+
+            neighbors= current_state.get_neighbors(self.grid)
+            #print(current_state.get_neighbors(self.grid))
+            #print(grid.heuristic(start_state.get_neighbors(self.grid)))
+
+            #print(current_state.get_neighbors(self.grid))
+            #print(grid.heuristic(start_state.get_neighbors(self.grid)))
+           # print(neighbors_heuristic)
+            if current_state.is_goal(self.goal_state):
+                return path
+
+            self.visited.add((current_state.x, current_state.y, 0))
+
+
+            neighbors_heuristic = sorted(neighbors_heuristic, key=lambda item: item[1])
+
+            #print(neighbors_heuristic)
+            for neighbor in neighbors_heuristic:
+
+                neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
+                if neighbor_signature not in self.visited:
+
+                    self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid))))
+                    break
+
+
+        return None
+
+class Astar:
+    def __init__(self, start_state, goal_state, grid):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.visited = set()
+        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid)))])  # Queue stores (state, path_to_state, heuristic_cost)
+
+    def search(self):
+        while self.queue:
+
+            current_state, path, neighbors_heuristic = self.queue.pop()
+
+            neighbors= current_state.get_neighbors(self.grid)
+
+            if current_state.is_goal(self.goal_state):
+                return path
+
+            self.visited.add((current_state.x, current_state.y, 0))
+
+            astar_heuristic = []
+
+
+
+            for neighbor in neighbors_heuristic:
+
+               astar_heuristic.append([neighbor[0] , neighbor[1] + self.grid.get_distance(neighbor[0], self.goal_state)])
+
+            astar_heuristic = sorted(astar_heuristic, key=lambda item: item[1])
+
+            for neighbor in astar_heuristic:
+
+                neighbor_signature = (neighbor[0].x, neighbor[0].y, 0)
+                if neighbor_signature not in self.visited:
+
+                    self.queue.append((neighbor[0], path + [neighbor[0]], self.grid.heuristic(neighbor[0].get_neighbors(self.grid))))
+                    break
+
+
+        return None
+
+class UniformCostSearch:
+    def __init__(self, start_state, goal_state, grid):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.visited = set()
+        self.queue = PriorityQueue()
+
+        self.queue.put((0, start_state, [start_state]))
+
+    def search(self):
+        while not self.queue.empty():
+            current_cost, current_state, path = self.queue.get()
+
+            if current_state.is_goal(self.goal_state):
+                return path, current_cost
+
+            state_key = (current_state.x, current_state.y, frozenset(current_state.collected_items))
+            self.visited.add(state_key)
+
+            for neighbor in current_state.get_neighbors(self.grid):
+                neighbor_key = (neighbor.x, neighbor.y, frozenset(neighbor.collected_items))
+                if neighbor_key not in self.visited:
+                    new_cost = current_cost + 1
+                    self.queue.put((new_cost, neighbor_key, path + [neighbor]))
+
+        return None, float('inf')

@@ -47,9 +47,9 @@ class Game:
                         self.screen,
                         (255, 0, 0),
                         [
-                            (cell_rect.left + self.cell_size // 2, cell_rect.top),
-                            (cell_rect.left, cell_rect.bottom),
-                            (cell_rect.right, cell_rect.bottom),
+                            ((cell_rect.left + self.cell_size // 2), cell_rect.top+10),
+                            (cell_rect.left+10, cell_rect.bottom-10),
+                            (cell_rect.right-10, cell_rect.bottom-10),
                         ],
                     )
 
@@ -57,7 +57,7 @@ class Game:
                 if (x, y) in self.grid.collectibles and (x, y) not in collected_items:
                     pygame.draw.circle(
                         self.screen,
-                        (0, 0, 255),
+                        (0, 125, 255),
                         cell_rect.center,
                         self.cell_size // 4,
                     )
@@ -83,7 +83,7 @@ class Game:
 
         running = True
         while running:
-            self.screen.fill((255, 255, 255))
+            self.screen.fill((0, 0, 0))
             self.draw_grid(current_index, collected_items)
             pygame.display.flip()
             self.clock.tick(60)

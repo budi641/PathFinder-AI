@@ -12,7 +12,7 @@ class State:
 
         for dx, dy in directions:
             nx, ny = self.x + dx, self.y + dy
-            if grid.is_within_bounds(nx, ny) and not grid.is_obstacle(nx, ny):
+            if grid.is_within_bounds(nx, ny):
                 # Collect items if moving to a collectible cell
                 new_collected = self.collected_items.copy()
                 if grid.is_collectible(nx, ny):
@@ -26,3 +26,5 @@ class State:
 
     def __repr__(self):
         return f"State(x={self.x}, y={self.y}, collected_items={self.collected_items})"
+
+
