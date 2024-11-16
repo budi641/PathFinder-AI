@@ -41,17 +41,17 @@ class Grid:
         # The total state space size is the product of valid positions and collectible combinations
         state_space_size = valid_states * collectible_combinations
         return state_space_size
-    def heuristic (self, neighbors):
+    def heuristic (self, neighbors, goal_state):
 
       neighbors_heuristic=[]
       for neighbor in (neighbors):
         h=5
-        if neighbor.is_goal(neighbor):
+        if neighbor.is_goal(goal_state):
              h=0
-        elif self.is_obstacle(neighbor.x, neighbor.y):
-            h=sys.maxsize
+        if self.is_obstacle(neighbor.x, neighbor.y):
+             h=sys.maxsize
 
-        elif self.is_collectible(neighbor.x, neighbor.y):
+        if self.is_collectible(neighbor.x, neighbor.y):
               h=1
 
 
@@ -64,3 +64,4 @@ class Grid:
           distance = math.sqrt((neighbor.x - goal_state.x)**2 + (neighbor.y - goal_state.y)**2)
 
           return distance
+
