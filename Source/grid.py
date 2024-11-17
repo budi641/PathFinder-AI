@@ -5,7 +5,8 @@ class Grid:
         self.size = size
         self.obstacles = obstacles if obstacles else set()
         self.collectibles = collectibles if collectibles else set()
-
+    def get_size(self):
+        return self.size
     def is_within_bounds(self, x, y):
         return 0 <= x < self.size and 0 <= y < self.size
 
@@ -59,7 +60,15 @@ class Grid:
         neighbors_heuristic.append([neighbor,h])
 
       return neighbors_heuristic
-
+   
+    def second_heuristic(self, neighbors, goal_state):
+       neighbors_heuristic=[]
+       for neighbor in neighbors: 
+        h = abs(neighbor.x - goal_state.x) + abs(neighbor.y - goal_state.y)
+        neighbors_heuristic.append([neighbor,h])
+        
+        return neighbors_heuristic
+        
     def get_distance(self, neighbor, goal_state):
 
           distance = math.sqrt((neighbor.x - goal_state.x)**2 + (neighbor.y - goal_state.y)**2)

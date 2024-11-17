@@ -42,8 +42,8 @@ class BreadthFirstSearch:
         self.start_state = start_state
         self.goal_state = goal_state
         self.grid = grid
-        self.visited = set()  # To track visited states
-        self.queue = deque([(start_state, [start_state])])  # Queue stores (state, path_to_state)
+        self.visited = set() 
+        self.queue = deque([(start_state, [start_state])]) 
 
     def search(self):
 
@@ -69,35 +69,31 @@ class IterativeDeepeningSearch:
         self.start_state = start_state
         self.goal_state = goal_state
         self.grid = grid
+        self.max_depth = 100
+        self.visited = set()
+        self.stack = [(start_state, [start_state], 0)] 
 
     def search(self):
-        depth = 0
-        while True:
-            result = self.depth_limited_search(self.start_state, depth)
-            if result is not None:
-                return result
-            depth += 1
+        for depth_limit in range(self.max_depth):
+            self.stack = [(self.start_state, [self.start_state], 0)] 
+            self.visited = set() 
 
-    def depth_limited_search(self, state, limit):
-        return self.recursive_dls(state, limit, set(), [state])
+            while self.stack:
+                current_state, path, current_depth = self.stack.pop()
 
-    def recursive_dls(self, state, limit, visited, path):
-        if state.is_goal(self.goal_state):
-            return path
+                if current_state.is_goal(self.goal_state):
+                    return path
 
-        if limit == 0:
-            return None
+                if current_depth >= depth_limit:
+                    continue
 
-        visited.add((state.x, state.y))
+                self.visited.add((current_state.x, current_state.y))
 
-        for neighbor in state.get_neighbors_uninformed(self.grid):
-            key = (neighbor.x, neighbor.y)
-            if key not in visited:
-                result = self.recursive_dls(neighbor, limit - 1, visited, path + [neighbor])
-                if result is not None:
-                    return result
+                for neighbor in current_state.get_neighbors_uninformed(self.grid):
+                    neighbor_key = (neighbor.x, neighbor.y)
+                    if neighbor_key not in self.visited:
+                        self.stack.append((neighbor, path + [neighbor], current_depth + 1))
 
-        visited.remove((state.x, state.y))
         return None
 
 class GreedySearch:
@@ -106,7 +102,7 @@ class GreedySearch:
         self.goal_state = goal_state
         self.grid = grid
         self.visited = set()
-        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid),goal_state))])  
+        self.queue = deque([(start_state, [start_state], grid.second_heuristic(start_state.get_neighbors(self.grid),goal_state))])  
 
     def search(self):
         while self.queue:
@@ -142,7 +138,7 @@ class Astar:
         self.goal_state = goal_state
         self.grid = grid
         self.visited = set()
-        self.queue = deque([(start_state, [start_state], grid.heuristic(start_state.get_neighbors(self.grid),goal_state))])  
+        self.queue = deque([(start_state, [start_state], grid.second_heuristic(start_state.get_neighbors(self.grid),goal_state))])  
 
     def search(self):
         while self.queue:
@@ -165,7 +161,7 @@ class Astar:
                astar_heuristic.append([neighbor[0] , neighbor[1] + self.grid.get_distance(neighbor[0], self.goal_state)])
 
             astar_heuristic = sorted(astar_heuristic, key=lambda item: item[1])
-            #print( astar_heuristic)
+           
             for neighbor in astar_heuristic:
 
                 neighbor_signature = (neighbor[0].x, neighbor[0].y)
@@ -187,25 +183,26 @@ class UniformCostSearch:
         self.grid = grid
         self.visited = set()
         self.queue = PriorityQueue()
-        self.queue.put((0, start_state, [start_state]))
+        self.counter = 0  
+        self.queue.put((0, self.counter, start_state, [start_state]))
 
     def search(self):
         while not self.queue.empty():
-            current_cost, current_state, path = self.queue.get()
+            current_cost, _, current_state, path = self.queue.get()
 
             if current_state.is_goal(self.goal_state):
-                return path, current_cost
+                break
 
-            
-            self.visited.add(current_state.x, current_state.y)
+            self.visited.add((current_state.x, current_state.y)) 
 
             for neighbor in current_state.get_neighbors_uninformed(self.grid):
                 neighbor_key = (neighbor.x, neighbor.y)
                 if neighbor_key not in self.visited:
                     new_cost = current_cost + 1
-                    self.queue.put((new_cost, neighbor_key, path + [neighbor]))
+                    self.counter += 1 
+                    self.queue.put((new_cost, self.counter, neighbor, path + [neighbor]))
 
-        return None
+        return path
 
 
 class HillClimbing:
