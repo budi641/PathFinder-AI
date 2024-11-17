@@ -174,36 +174,6 @@ class Astar:
         return None
 
 
-
-'''
-class UniformCostSearch:
-    def __init__(self, start_state, goal_state, grid):
-        self.start_state = start_state
-        self.goal_state = goal_state
-        self.grid = grid
-        self.visited = set()
-        self.queue = PriorityQueue()
-        self.counter = 0  
-        self.queue.put((0, self.counter, start_state, [start_state]))
-
-    def search(self):
-        while not self.queue.empty():
-            current_cost, _, current_state, path = self.queue.get()
-
-            if current_state.is_goal(self.goal_state):
-                break
-
-            self.visited.add((current_state.x, current_state.y)) 
-
-            for neighbor in current_state.get_neighbors_uninformed(self.grid):
-                neighbor_key = (neighbor.x, neighbor.y)
-                if neighbor_key not in self.visited:
-                    new_cost = current_cost + 1
-                    self.counter += 1 
-                    self.queue.put((new_cost, self.counter, neighbor, path + [neighbor]))
-
-        return path
-'''
 from queue import PriorityQueue
 
 class UniformCostSearch:

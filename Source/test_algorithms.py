@@ -96,7 +96,92 @@ def run_tests():
         collectibles=set(),
         expected_path=None  # No path expected
     )
+#first heuristic
+    test_algorithm(
+        GreedySearch,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles={(2, 2), (3, 3)},
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0, 0),(1, 0), (2, 0),(3, 0), (4, 0) ,(4, 1) , (4, 2) , (4, 3),(4, 4)]
+    )
+#first heuristic
+    test_algorithm(
+        GreedySearch,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles=set(),
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0, 0),(1, 0) , (2, 0) , (3, 0) , (4, 0), (4, 1), (4, 2) ,(4, 3) , (4, 4)]
+    )
 
+#second heurisitc heuristic
+    test_algorithm(
+        GreedySearch,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles={(2, 2), (3, 3)},
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0, 0),(1, 0) ,(2, 0) , (3, 0), (4, 0) , (4, 1), (4, 2) , (4, 3) , (4, 4)]
+    )
+
+#second heuristic
+    test_algorithm(
+        GreedySearch,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles=set(),
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0, 0) ,(1, 0) , (2, 0), (3, 0), (4, 0) ,(4, 1) , (4, 2), (4, 3),(4, 4)]
+    )
+
+#first heuristic
+    test_algorithm(
+        Astar,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles={(2, 2), (3, 3)},
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0,0) ,(1,0) , (1,1),(2,1),(3,1) , (3,2) , (4,2) , (4,3) , (4,4)]
+    )
+#first heuristic
+    test_algorithm(
+        Astar,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles=set(),
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0,0), (1,0) , (1,1), (2,1) , (3,1) , (3,2), (4,2) ,(4,3) , (4,4)]
+
+    )
+
+#second heurisitc heuristic
+    test_algorithm(
+        Astar,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles={(2, 2), (3, 3)},
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0,0), (1,0) , (1,1) , (2,1) ,(3,1) , (3,2) , (3,3)  ,(4,3) , (4,4)]
+    )
+
+#second heuristic
+    test_algorithm(
+        Astar,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles=set(),
+        collectibles={(1, 1), (3, 3)},
+        expected_path= [(0,0) , (1,0),(1,1) , (2,1), (3,1) ,(3,2) , (3,3) , (4,3) , (4,4)]
+    )
 
 if __name__ == "__main__":
     run_tests()
