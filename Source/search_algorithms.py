@@ -253,6 +253,7 @@ class SimulatedAnnealing:
                 break
 
             if(current_state == self.goal_state):
+                self.temperature = 0
                 break
 
             next_state = random.choice(neighbors)

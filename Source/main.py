@@ -57,7 +57,7 @@ def main():
         print(f"Runtime: {runtime:.6f} seconds")
     else:
         print("No path found.")
-        #return
+        return
 
     # Visualize the path using the Game class
     game = Game(grid, start_state, goal_state, path)
