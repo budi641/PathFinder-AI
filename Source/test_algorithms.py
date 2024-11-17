@@ -53,7 +53,29 @@ def run_tests():
         expected_path=[(0, 0), (0, 1), (0, 2), (1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)]
     )
 
+    test_algorithm(
+        UniformCostSearch,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles={(2, 2), (3, 3)},
+        collectibles={(1, 1), (3, 3)},
+        
+        expected_path=[(0, 0),(1, 0),(1, 1) , (2, 1) ,(3, 1) ,(3, 2) ,(4, 2) ,(4, 3),(4, 4)]
+    )
+
     # Collectibles Test
+    test_algorithm(
+        UniformCostSearch,
+        grid_size=5,
+        start_pos=(0, 0),
+        goal_pos=(4, 4),
+        obstacles=set(),
+        collectibles={(1, 1), (3, 3)},
+        expected_path=[(0, 0),(1, 0), (1, 1),(2, 1) ,(3, 1),(3, 2),(3, 3),(4, 3) ,(4, 4)]
+    )
+
+
     test_algorithm(
         IterativeDeepeningSearch,
         grid_size=5,

@@ -175,7 +175,7 @@ class Astar:
 
 
 
-
+'''
 class UniformCostSearch:
     def __init__(self, start_state, goal_state, grid):
         self.start_state = start_state
@@ -203,8 +203,53 @@ class UniformCostSearch:
                     self.queue.put((new_cost, self.counter, neighbor, path + [neighbor]))
 
         return path
+'''
+from queue import PriorityQueue
 
+class UniformCostSearch:
+    def __init__(self, start_state, goal_state, grid):
+        self.start_state = start_state
+        self.goal_state = goal_state
+        self.grid = grid
+        self.visited = set()
+        self.queue = PriorityQueue()
+        self.counter = 0
+        self.queue.put((0, self.counter, start_state, [start_state]))
 
+    def calculate_cost(self, state, current_cost):
+        cost = current_cost + 5  
+
+        if self.grid.is_collectible(state.x, state.y):
+            cost -= 4 
+
+        if self.grid.is_obstacle(state.x, state.y):
+            cost = sys.maxsize
+
+        return cost
+
+    def search(self):
+        while not self.queue.empty():
+            current_cost, _, current_state, path = self.queue.get()
+
+            if current_state.is_goal(self.goal_state):
+                return path
+
+            neighbor_signature = (current_state.x, current_state.y)
+            if neighbor_signature not in self.visited:
+               
+                self.visited.add(neighbor_signature)
+
+                for neighbor in current_state.get_neighbors_uninformed(self.grid):
+                    neighbor_id = (neighbor.x, neighbor.y)
+                    
+                    if neighbor_id not in self.visited:
+                        new_cost = self.calculate_cost(neighbor, current_cost)
+                        if new_cost != sys.maxsize:  
+                            self.counter += 1
+                            self.queue.put((new_cost, self.counter, neighbor, path + [neighbor]))
+
+        return None
+    
 class HillClimbing:
     def __init__(self, start_state, goal_state, grid):
         self.start_state = start_state
