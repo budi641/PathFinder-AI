@@ -4,6 +4,7 @@ from state import State
 from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDeepeningSearch,Astar,GreedySearch,UniformCostSearch,HillClimbing,SimulatedAnnealing
 from game import Game
 import timeit
+from statistics import visualize_search_tree
 
 
 def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
@@ -42,7 +43,7 @@ def main():
 
     # Measure runtime
     start_time = timeit.default_timer()
-    path = search_algorithm.search()
+    path,tree = search_algorithm.search()
     end_time = timeit.default_timer()
     runtime = end_time - start_time
 
@@ -60,6 +61,11 @@ def main():
         return
 
     # Visualize the path using the Game class
+
+    if tree:
+        visualize_search_tree(tree,START_POSITION,GOAL_POSITION)
+
+
     game = Game(grid, start_state, goal_state, path)
     game.run()
 
