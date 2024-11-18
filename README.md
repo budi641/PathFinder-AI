@@ -6,7 +6,7 @@ This project implements a pathfinding AI capable of navigating a 2D grid to reac
 
 ---
 
-## **1. Problem Modeling**
+## **Problem Modeling**
 
 ### **Problem Overview**
 
@@ -61,7 +61,7 @@ This project implements a pathfinding AI capable of navigating a 2D grid to reac
 
 ---
 
-## **2. Code Structure**
+### **Code Structure**
 
 ### **Grid Class** (`grid.py`)
 - Manages the grid layout, obstacles, collectibles, and provides helper functions for cell checks, grid size validation, action validation, and estimating the state space size.
@@ -100,7 +100,88 @@ class Grid:
         return state_space_size
 ```
 
-#### **Explanation**:
+## **Search Algorithms**
+
+The AI supports several search algorithms, each with distinct characteristics. These algorithms explore the state space to find the best path.
+
+### **Implemented Algorithms**
+#### **1. Uninformed Search**
+- **Depth-First Search (DFS)**:
+  - Explores as deeply as possible before backtracking.
+  - May not find the shortest path.
+- **Breadth-First Search (BFS)**:
+  - Explores all neighbors at the current depth before moving deeper.
+  - Guarantees the shortest path for unweighted grids.
+- **Iterative Deepening Search (IDS)**:
+  - Combines BFS and DFS by performing a series of depth-limited searches.
+  - Uses less memory than BFS.
+
+#### **2. Informed Search**
+- **Greedy Best-First Search**:
+  - Uses a heuristic to prioritize exploration, but may not find the shortest path.
+- **A* Search**:
+  - Combines uniform cost and heuristic guidance to guarantee the shortest path.
+
+#### **3. Local Search**
+- **Hill Climbing**:
+  - Always moves toward the best immediate heuristic improvement.
+  - Can get stuck in local maxima.
+- **Simulated Annealing**:
+  - Occasionally accepts worse states to escape local maxima.
+  - Uses a cooling schedule to reduce randomness over time.
+
+#### **4. Cost-Based Search**
+- **Uniform Cost Search (UCS)**:
+  - Expands the least-cost node first.
+  - Guarantees the shortest path.
+
+---
+
+### **Search Tree Visualization**
+All algorithms track and return their search tree, which can be visualized to understand the exploration process. Using **NetworkX** and **Matplotlib**, nodes and edges represent explored states and transitions.
+
+Example visualization for BFS:
+```python
+from search_algorithms import BreadthFirstSearch
+from visualization import visualize_search_tree
+
+grid = Grid(size=5)
+grid.initialize_grid(obstacle_positions={(2, 2)}, collectible_positions=set())
+start_state = State(0, 0)
+goal_state = State(4, 4)
+
+bfs = BreadthFirstSearch(start_state, goal_state, grid)
+path, tree = bfs.search()
+
+visualize_search_tree(tree, (0, 0), (4, 4))
+```
+
+---
+
+
+### **Testing**
+
+All algorithms are tested using a suite of predefined test cases to validate:
+1. **Path Validity**: Starts at the initial state, avoids obstacles, ends at the goal.
+2. **Optimality**: Whether the path length matches expectations (if applicable).
+3. **Behavior**: Handles edge cases like no path or fully blocked grids.
+
+### **Example Test Case**
+```python
+test_algorithm(
+    BreadthFirstSearch,
+    grid_size=5,
+    start_pos=(0, 0),
+    goal_pos=(4, 4),
+    obstacles={(2, 2)},
+    collectibles=set(),
+    expected_path=[(0, 0), (0, 1), (1, 1), (1, 2), (1, 3), (1, 4), (2, 4), (3, 4), (4, 4)]
+)
+```
+
+---
+
+### **Explanation**:
 - **is_within_bounds(x, y)**: Ensures moves stay within grid boundaries.
 - **is_valid_grid_size(size)**: Checks that the grid size is within a set limit.
 - **validate_action(x, y, grid_size)**: Validates if an action will stay within grid bounds.
@@ -137,13 +218,13 @@ class State:
         return f"State(x={self.x}, y={self.y}, collected_items={self.collected_items})"
 ```
 
-#### **Explanation**:
+### **Explanation**:
 - **get_neighbors(grid)**: Generates potential moves, checking boundaries, obstacles, and collectibles.
 - **is_goal(goal_state)**: Checks if the AI has reached the goal.
 - **collected_items**: Tracks items collected by the AI in the current state.
 ---
 
-## **3. Problem Size Estimation**
+### **Problem Size Estimation**
 
 - **Method**: The size of the state space is estimated by considering the number of valid cells and collectible configurations.
   - **Valid Positions**: The total number of cells in the grid minus the number of obstacle cells.
@@ -161,5 +242,5 @@ For a 5x5 grid with 3 obstacles and 2 collectibles:
 
 --- 
 
-## **3. Performance and Visualization**
+### **Performance and Visualization**
 [Open the document](https://docs.google.com/document/d/1iCnu9sq-GrP05LBeqpqgcEWXa0k-b7v0AVj7XQ5SLEI/edit?pli=1&tab=t.0)

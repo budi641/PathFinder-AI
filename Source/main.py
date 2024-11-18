@@ -66,12 +66,11 @@ def main():
 
     # Visualize the path using the Game class
 
-    if tree:
-        visualize_search_tree(tree,START_POSITION,GOAL_POSITION)
-
-
     game = Game(grid, start_state, goal_state, path)
     game.run()
+
+    if tree:
+        visualize_search_tree(tree,START_POSITION,GOAL_POSITION)
 
 if __name__ == "__main__":
     main()
