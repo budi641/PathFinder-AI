@@ -160,3 +160,8 @@ For a 5x5 grid with 3 obstacles and 2 collectibles:
 - State space size = 22 * 4 = 88  
 
 --- 
+
+
+**Performance and Visualisation**
+
+https://docs.google.com/document/d/1iCnu9sq-GrP05LBeqpqgcEWXa0k-b7v0AVj7XQ5SLEI/edit?usp=sharing
