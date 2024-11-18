@@ -161,7 +161,5 @@ For a 5x5 grid with 3 obstacles and 2 collectibles:
 
 --- 
 
-## **3. Performance**
-
-
-![alt text](image.png)
+## **3. Performance and Visualization**
+[Open the document](https://docs.google.com/document/d/1iCnu9sq-GrP05LBeqpqgcEWXa0k-b7v0AVj7XQ5SLEI/edit?pli=1&tab=t.0)
