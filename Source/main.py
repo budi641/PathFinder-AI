@@ -5,7 +5,7 @@ from search_algorithms import DepthFirstSearch, BreadthFirstSearch, IterativeDee
 from game import Game
 import timeit
 from statistics import visualize_search_tree
-
+import tracemalloc
 
 def select_search_algorithm(algorithm_name, start_state, goal_state, grid):
     match algorithm_name:
@@ -41,12 +41,14 @@ def main():
     # Select and run the search algorithm
     search_algorithm = select_search_algorithm(SEARCH_ALGORITHM, start_state, goal_state, grid)
 
-    # Measure runtime
+    # Measure runtime 
+    tracemalloc.start()
     start_time = timeit.default_timer()
     path,tree = search_algorithm.search()
     end_time = timeit.default_timer()
     runtime = end_time - start_time
-
+    
+    
     # Display the results
     if path:
         print("Path found")
@@ -56,6 +58,8 @@ def main():
 
 
         print(f"Runtime: {runtime:.6f} seconds")
+        print(f"current and peak: {tracemalloc.get_traced_memory()}")
+        tracemalloc.stop()
     else:
         print("No path found.")
         return
